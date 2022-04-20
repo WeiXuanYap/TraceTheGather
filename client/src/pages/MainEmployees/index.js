@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Profile from '../../components/MainEmployees/Profile'
-import Button from '../../components/Sidebar/Button'
+import Button from '../../components/Sidebar/SidebarButton'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import Booking from '../../components/Bookings/DateAndTime'
 

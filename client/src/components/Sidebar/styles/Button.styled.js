@@ -4,14 +4,16 @@ export const Container = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  cursor: pointer;
 
-  padding: 10px;
+  padding: 8px;
+  margin: 8px;
 
   &:hover {
-    background: #b0e0e6;
+    background: #e3f2fd;
   }
 
-  background: ${(props) => (props.isSelected ? '#B0E0E6' : 'white')};
+  background: ${(props) => (props.isSelected ? '#E3F2FD;' : 'white')};
 `
 export const Text = styled.div`
   font-family: 'Roboto';
@@ -25,7 +27,7 @@ export const Text = styled.div`
 
   /* Black / High Emphasis */
 
-  color: rgba(0, 0, 0, 0.87);
+  color: ${(props) => (props.isSelected ? '#2196F3' : 'rgba(0, 0, 0, 0.87)')};
 
-  padding-left: 10px;
+  padding-left: 25px;
 `

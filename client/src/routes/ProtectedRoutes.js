@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import LandingPage from '../pages/LandingPage'
+import LandingPage from '../pages/PageLanding'
 
 export default function ProtectedRoutes() {
   const checkAuthenticated = async () => {
