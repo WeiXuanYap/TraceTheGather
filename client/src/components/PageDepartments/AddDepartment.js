@@ -24,7 +24,7 @@ export default function AddDepartment() {
         did: did,
         dname: dname,
       }
-      const response = await fetch('http://localhost:3000/departments', {
+      const response = await fetch('http://localhost:8080/departments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

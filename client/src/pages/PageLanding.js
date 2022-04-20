@@ -8,7 +8,7 @@ export default function PageLanding({ setAuth }) {
 
   async function loginUser(credentials) {
     try {
-      return await fetch('http://localhost:3000/login', {
+      return await fetch('http://localhost:8080/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default function PageLanding({ setAuth }) {
         localStorage.setItem('token', parseRes.jwtToken)
         setAuth = true
         console.log('Logged in Successfully')
-        navigate(`/profile/${parseRes.id}`)
+        navigate(`/admin`)
       } else {
         setAuth = false
         console.log(parseRes)

@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-export default function Booking() {
+export default function Booking(props) {
   const [startDate, setStartDate] = useState(new Date())
   const [timeStart, setTimeStart] = useState('08:00')
   const [timeEnd, setTimeEnd] = useState('09:00')
@@ -15,15 +15,15 @@ export default function Booking() {
     e.preventDefault()
     try {
       const body = {
-        floor: floor,
-        room: room,
+        floor: props.data.floor,
+        room: props.data.room,
         date: startDate,
         start_hour: timeStart,
         end_hour: timeEnd,
-        eid: id,
+        eid: props.data.id,
       }
       const response = await fetch(
-        'http://localhost:3000/employees/:id/rooms/book',
+        'http://localhost:8080/employees/:id/rooms/book',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

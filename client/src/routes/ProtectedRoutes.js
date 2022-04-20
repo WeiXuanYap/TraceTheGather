@@ -5,7 +5,7 @@ import LandingPage from '../pages/PageLanding'
 export default function ProtectedRoutes() {
   const checkAuthenticated = async () => {
     try {
-      const res = await fetch('http://localhost:3000/verify', {
+      const res = await fetch('http://localhost:8080/verify', {
         method: 'POST',
         headers: { jwt_token: localStorage.token },
       })

@@ -27,7 +27,7 @@ export default function TableEmployee(props) {
         eid: id,
         date: today,
       }
-      const response = await fetch(`http://localhost:3000/employees/resign`, {
+      const response = await fetch(`http://localhost:8080/employees/resign`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

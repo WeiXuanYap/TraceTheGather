@@ -12,7 +12,7 @@ export default function PageMeetingsJoin() {
 
   const getEmployees = async () => {
     try {
-      const response = await fetch('http://localhost:3000/employees')
+      const response = await fetch('http://localhost:8080/employees')
       const jsonData = await response.json()
       //console.log(jsonData)
       setEmployees(jsonData)

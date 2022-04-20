@@ -3,7 +3,12 @@ import IconButton from '../IconButton'
 import addIcon from '../../assets/AddEmployee.svg'
 import Modal from '../Modal'
 import TextButton from '../TextButton'
-import { StyledInput, Label, InputGroup, ButtonContainer } from '../Form/Form.styled'
+import {
+  StyledInput,
+  Label,
+  InputGroup,
+  ButtonContainer,
+} from '../Form/Form.styled'
 
 export default function AddEmployee() {
   const [showAddEmployee, setShowAddEmployee] = useState(false)
@@ -27,7 +32,7 @@ export default function AddEmployee() {
         homenum: homeNum,
         officenum: officeNum,
       }
-      const response = await fetch('http://localhost:3000/employees', {
+      const response = await fetch('http://localhost:8080/employees', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

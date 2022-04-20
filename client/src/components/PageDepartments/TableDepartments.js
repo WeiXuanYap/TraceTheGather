@@ -14,7 +14,7 @@ export default function TableDepartments(props) {
   //Deleting a department with id
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/departments/${id}`, {
+      const response = await fetch(`http://localhost:8080/departments/${id}`, {
         method: 'DELETE',
       })
       console.log(response)
