@@ -48,7 +48,7 @@ app.use(flash());*/
 
 const jwt = require('jsonwebtoken')
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 
 //UNCOMMENT THIS IF YOU WANT TO USE LOCAL DB
 
@@ -198,7 +198,7 @@ app.delete('/departments/:id', (req, res) => {
 #################################################### */
 
 //Get all Employees
-//employees which are not resigned will be displayed first
+//employees which are not resigned will be displayed
 app.get('/employees', (req, res) => {
   db.query('SELECT * FROM Employees ORDER BY resigned_date NULLS FIRST, eid ASC').then((data) => {
     res.send(data)
@@ -225,6 +225,7 @@ app.post('/employees/resign', (req, res) => {
   db.proc('remove_employee', [req.body.eid, req.body.date]).then(
     (data) => {
       res.send(data)
+  })
 })
 
 //non_compliance function
@@ -233,6 +234,7 @@ app.post('/employees/non_compliance', (req, res) => {
   db.function('non_compliance', [req.body.start_date, req.body.end_date]).then(
     (data) => {
       res.send(data)
+  })
 })
 
 /**
@@ -245,6 +247,19 @@ app.get('/employees/:id', (req, res) => {
       res.send(data)
     }
   )
+})
+
+/* params needed:
+eid INTEGER
+date DATE
+temp NUMERIC
+*/
+app.post('/employees/:id/health_declaration', (req, res) => {
+  db.proc('declare_health', [req.params.id].then(
+    (data) => {
+      res.send(data)
+    }
+  ))
 })
 
 //Contact_tracing function
