@@ -73,10 +73,6 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
-})
-
 /*app.use('/login', (req, res) => {
   res.send({
     token: 'test123'
@@ -492,4 +488,8 @@ app.get('/api/employees/joinable-meetings', (req, res) => {
   db.func('view_joinable_meetings').then((data) => {
     res.send(data)
   })
+})
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
