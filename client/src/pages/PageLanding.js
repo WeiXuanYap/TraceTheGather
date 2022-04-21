@@ -8,7 +8,7 @@ export default function PageLanding({ setAuth }) {
 
   async function loginUser(credentials) {
     try {
-      return await fetch('http://localhost:8080/login', {
+      return await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

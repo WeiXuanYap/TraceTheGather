@@ -22,14 +22,11 @@ export default function Booking(props) {
         end_hour: timeEnd,
         eid: props.data.id,
       }
-      const response = await fetch(
-        'http://localhost:8080/employees/:id/rooms/book',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        }
-      )
+      const response = await fetch('/api/employees/:id/rooms/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
       console.log(response)
 
       window.location.reload()

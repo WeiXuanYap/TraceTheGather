@@ -5,7 +5,7 @@ export default function List() {
 
   const getDepartments = async () => {
     try {
-      const response = await fetch('http://localhost:8080/departments')
+      const response = await fetch('/api/departments')
       const jsonData = await response.json()
 
       console.log(jsonData)

@@ -11,7 +11,7 @@ export default function PageProfile() {
 
   const getEmployees = async () => {
     try {
-      const response = await fetch('http://localhost:8080/employees')
+      const response = await fetch('/api/employees')
       const jsonData = await response.json()
       //console.log(jsonData)
       setEmployees(jsonData)

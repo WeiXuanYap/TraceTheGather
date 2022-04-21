@@ -32,7 +32,7 @@ export default function AddEmployee() {
         homenum: homeNum,
         officenum: officeNum,
       }
-      const response = await fetch('http://localhost:8080/employees', {
+      const response = await fetch('/api/employees', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

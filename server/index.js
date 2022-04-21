@@ -51,13 +51,13 @@ const port = process.env.PORT || 8080
 
 //UNCOMMENT THIS IF YOU WANT TO USE LOCAL DB
 
-/*const db = pgp({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-})*/
+// const db = pgp({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DATABASE,
+//   password: process.env.DB_PASSWORD,
+//   port: process.env.DB_PORT,
+// })
 
 //THIS DB is used for production, its the heroku DB and will automatically switch urls.
 const cn = {
@@ -73,7 +73,7 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
@@ -126,7 +126,7 @@ const verifyJWT = (req, res, next) => {
   }
 }
 
-app.post('/verify', verifyJWT, (req, res) => {
+app.post('/api/verify', verifyJWT, (req, res) => {
   try {
     res.json(true)
   } catch (err) {
@@ -135,7 +135,7 @@ app.post('/verify', verifyJWT, (req, res) => {
   }
 })
 
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
   //1. destructure req.body
   const username = req.body.username
   const password = req.body.password
@@ -165,7 +165,7 @@ app.post('/login', (req, res) => {
 })
 
 //Get all departments
-app.get('/departments', (req, res) => {
+app.get('/api/departments', (req, res) => {
   db.query('SELECT * FROM departments').then((data) => {
     res.send(data)
   })
@@ -176,7 +176,7 @@ app.get('/departments', (req, res) => {
  * DID - Integer
  * dname - String up to 50 characters
  */
-app.post('/departments', (req, res) => {
+app.post('/api/departments', (req, res) => {
   db.proc('add_department', [req.body.did, req.body.dname]).then((data) => {
     res.send(data)
   })
@@ -186,7 +186,7 @@ app.post('/departments', (req, res) => {
  * Delete an existing department
  * ID - Integer
  */
-app.delete('/departments/:id', (req, res) => {
+app.delete('/api/departments/:id', (req, res) => {
   db.proc('remove_department', [req.params.id]).then((data) => {
     res.send(data)
   })
@@ -198,7 +198,7 @@ app.delete('/departments/:id', (req, res) => {
 
 //Get all Employees
 //employees which are not resigned will be displayed
-app.get('/employees', (req, res) => {
+app.get('/api/employees', (req, res) => {
   db.query(
     'SELECT * FROM Employees ORDER BY resigned_date NULLS FIRST, eid ASC'
   ).then((data) => {
@@ -206,7 +206,7 @@ app.get('/employees', (req, res) => {
   })
 })
 //Add a new Employee
-app.post('/employees', (req, res) => {
+app.post('/api/employees', (req, res) => {
   console.log(req.body)
   db.proc('add_employee', [
     req.body.name,
@@ -221,28 +221,28 @@ app.post('/employees', (req, res) => {
 })
 
 //Simulate an employee resigning
-app.post('/employees/resign', (req, res) => {
+app.post('/api/employees/resign', (req, res) => {
   console.log(req.body)
-  db.proc('remove_employee', [req.body.eid, req.body.date]).then(
-    (data) => {
-      res.send(data)
+  db.proc('remove_employee', [req.body.eid, req.body.date]).then((data) => {
+    res.send(data)
   })
 })
 
 //non_compliance function
-app.post('/employees/non_compliance', (req, res) => {
+app.post('/api/employees/non_compliance', (req, res) => {
   console.log(req.body)
   db.function('non_compliance', [req.body.start_date, req.body.end_date]).then(
     (data) => {
       res.send(data)
-  })
+    }
+  )
 })
 
 /**
  * Select specific employee
  * ID - Integer
  */
-app.get('/employees/:id', (req, res) => {
+app.get('/api/employees/:id', (req, res) => {
   db.query('SELECT * FROM Employees WHERE eid = $1', [req.params.id]).then(
     (data) => {
       res.send(data)
@@ -255,23 +255,24 @@ eid INTEGER
 date DATE
 temp NUMERIC
 */
-app.post('/employees/:id/health_declaration', (req, res) => {
-  db.proc('declare_health', [req.params.id].then(
-    (data) => {
+app.post('/api/employees/:id/health_declaration', (req, res) => {
+  db.proc(
+    'declare_health',
+    [req.params.id].then((data) => {
       res.send(data)
-    }
-  ))
+    })
+  )
 })
 
 //Contact_tracing function
-app.get('/employees/:id/contact_tracing', (req, res) => {
+app.get('/api/employees/:id/contact_tracing', (req, res) => {
   db.func('contact_tracing', [req.params.id]).then((data) => {
     res.send(data)
   })
 })
 
 //Get all rooms (use Postman or just go to http://localhost:8080/rooms)
-app.get('/employees/:id/rooms', (req, res) => {
+app.get('/api/employees/:id/rooms', (req, res) => {
   db.query('SELECT * FROM Meeting_Rooms').then((data) => {
     res.send(data)
   })
@@ -287,7 +288,7 @@ app.get('/employees/:id/rooms', (req, res) => {
  * mid - Employee ID (Trigger enforces that this must be a Manager)
  * date - Date Object
  */
-app.post('/employees/:id/rooms', (req, res) => {
+app.post('/api/employees/:id/rooms', (req, res) => {
   console.log(req.body)
   db.proc('add_room', [
     req.body.floor,
@@ -310,7 +311,7 @@ app.post('/employees/:id/rooms', (req, res) => {
  * date - Date Object
  * mid - Employee ID (Trigger enforces that this must be a Manager)
  */
-app.post('/employees/:id/rooms/change_capacity', (req, res) => {
+app.post('/api/employees/:id/rooms/change_capacity', (req, res) => {
   console.log(req.body)
   db.proc('change_capacity', [
     req.body.floor,
@@ -337,7 +338,7 @@ of the rooms as well to facilitate the booking/unbooking process
  * end_hour - Time object
  * eid - Employee ID
  */
-app.post('/employees/:id/rooms/book', (req, res) => {
+app.post('/api/employees/:id/rooms/book', (req, res) => {
   console.log(req.body)
   db.proc('book_room', [
     req.body.floor,
@@ -360,7 +361,7 @@ app.post('/employees/:id/rooms/book', (req, res) => {
  * end_hour - Time object
  * eid - Employee ID
  */
-app.post('/employees/:id/rooms/unbook', (req, res) => {
+app.post('/api/employees/:id/rooms/unbook', (req, res) => {
   console.log(req.body)
   db.proc('unbook_room', [
     req.body.floor,
@@ -393,7 +394,7 @@ We need to display the Date as 2021-01-01 in the FrontEnd! This possibly due to 
  * Date - Date Object, future meeting from this date
  * ID - Integer, Employee ID
  */
-app.get('/employees/:id/:date/view-future-meeting/', (req, res) => {
+app.get('/api/employees/:id/:date/view-future-meeting/', (req, res) => {
   db.func('view_future_meeting', [req.params.date, req.params.id]).then(
     (data) => {
       res.send(data)
@@ -407,7 +408,7 @@ app.get('/employees/:id/:date/view-future-meeting/', (req, res) => {
  * Date - Date Object, all meeting rooms that needs to be approved from this date
  * ID - Employee ID
  */
-app.get('/employees/:id/:date/view-manager-report', (req, res) => {
+app.get('/api/employees/:id/:date/view-manager-report', (req, res) => {
   db.func('view_manager_report', [req.params.date, req.params.id]).then(
     (data) => {
       res.send(data)
@@ -424,7 +425,7 @@ app.get('/employees/:id/:date/view-manager-report', (req, res) => {
  * end_hour - Time object
  * eid - Employee ID
  */
-app.post('/employees/join-meeting', (req, res) => {
+app.post('/api/employees/join-meeting', (req, res) => {
   db.proc('join_meeting', [
     req.body.floor,
     req.body.room,
@@ -447,7 +448,7 @@ app.post('/employees/join-meeting', (req, res) => {
  * eid - Employee ID
  */
 app.delete(
-  '/employees/:floor/:room/:date/:start_hour/:end_hour/:eid/leave-meeting',
+  '/api/employees/:floor/:room/:date/:start_hour/:end_hour/:eid/leave-meeting',
   (req, res) => {
     db.proc('leave_meeting', [
       req.params.floor,
@@ -471,7 +472,7 @@ app.delete(
  * end_hour - Time object
  * eid - Employee ID
  */
-app.post('/employees/approve-meeting', (req, res) => {
+app.post('/api/employees/approve-meeting', (req, res) => {
   db.proc('approve_meeting', [
     req.body.floor,
     req.body.room,
@@ -487,10 +488,8 @@ app.post('/employees/approve-meeting', (req, res) => {
 /**
  * Shows all available meetings in 1hour blocks which are not yet approved --> Users can join
  */
-app.get('/employees/joinable-meetings', (req,res) => {
-  db.func('view_joinable_meetings').then(
-    (data) => {
-      res.send(data)
-    }
-  )
+app.get('/api/employees/joinable-meetings', (req, res) => {
+  db.func('view_joinable_meetings').then((data) => {
+    res.send(data)
+  })
 })
