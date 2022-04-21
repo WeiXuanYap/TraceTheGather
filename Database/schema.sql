@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Employees, Junior, Booker, Senior, Manager, Health_Declaration,
+DROP TABLE IF EXISTS Employees, Admin, Junior, Booker, Senior, Manager, Health_Declaration,
 Departments, Meeting_Rooms, Updates, Joins, Books, Approves CASCADE;
 
 /*

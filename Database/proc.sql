@@ -242,6 +242,27 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION view_joinable_meetings()
+RETURNS TABLE(floor INTEGER, room INTEGER, date DATE, start_hour TIME) AS $$
+BEGIN
+    RETURN QUERY
+
+    WITH joinable_meetings AS (
+        SELECT b.floor, b.room, b.date, b.time
+        FROM Books as b LEFT OUTER JOIN Approves as a
+        ON b.date = a.date
+            AND b.time = a.time
+            AND b.floor = a.floor
+            AND b.room = a.room
+        WHERE b.date >= CURRENT_DATE
+            AND a.aid IS NULL
+    )
+
+    SELECT jm.floor, jm.room, jm.date, jm.time
+    FROM joinable_meetings AS jm;
+END;
+$$ LANGUAGE plpgsql;
+
 
 /*
     ###################
