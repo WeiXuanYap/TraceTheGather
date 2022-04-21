@@ -161,8 +161,14 @@ app.post('/api/login', (req, res) => {
 })
 
 //Get all departments
+/**
+ * returns res.did => departmdent id
+ * res.dname => dname
+ * res.employee_count => number of employees
+ */
+
 app.get('/api/departments', (req, res) => {
-  db.query('SELECT * FROM departments').then((data) => {
+  db.query('SELECT d.did as did, d.dname as dname, (SELECT COUNT(*) FROM Employees as e WHERE E.did = d.did) as employee_count FROM departments as d;').then((data) => {
     res.send(data)
   })
 })
@@ -483,6 +489,7 @@ app.post('/api/employees/approve-meeting', (req, res) => {
 
 /**
  * Shows all available meetings in 1hour blocks which are not yet approved --> Users can join
+ * returns floor, room, date, start_hour
  */
 app.get('/api/employees/joinable-meetings', (req, res) => {
   db.func('view_joinable_meetings').then((data) => {
