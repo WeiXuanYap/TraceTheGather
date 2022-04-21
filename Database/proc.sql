@@ -242,7 +242,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION view_joinable_meetings()
+CREATE OR REPLACE FUNCTION view_joinable_meetings( IN eid INTEGER )
 RETURNS TABLE(floor INTEGER, room INTEGER, date DATE, start_hour TIME) AS $$
 BEGIN
     RETURN QUERY

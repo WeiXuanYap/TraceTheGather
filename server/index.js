@@ -51,13 +51,13 @@ const port = process.env.PORT || 8080
 
 //UNCOMMENT THIS IF YOU WANT TO USE LOCAL DB
 
-// const db = pgp({
-//   user: process.env.DB_USER,
-//   host: process.env.DB_HOST,
-//   database: process.env.DATABASE,
-//   password: process.env.DB_PASSWORD,
-//   port: process.env.DB_PORT,
-// })
+/*const db = pgp({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+})*/
 
 
 //THIS DB is used for production, its the heroku DB and will automatically switch urls.
@@ -275,6 +275,12 @@ app.get('/api/employees/:id/contact_tracing', (req, res) => {
 })
 
 //Get all rooms (use Postman or just go to http://localhost:8080/rooms)
+/**
+ * return values: floor INTEGER,
+   room INTEGER,
+   rname varchar(50),
+   did INTEGER NOT NULL REFERENCES Departments,
+ */
 app.get('/api/employees/:id/rooms', (req, res) => {
   db.query('SELECT * FROM Meeting_Rooms').then((data) => {
     res.send(data)
@@ -492,10 +498,11 @@ app.post('/api/employees/approve-meeting', (req, res) => {
  * Shows all available meetings in 1hour blocks which are not yet approved --> Users can join
  * returns floor, room, date, start_hour
  */
-app.get('/api/employees/joinable-meetings', (req, res) => {
-  db.func('view_joinable_meetings').then((data) => {
-    res.send(data)
-  })
+app.get('/api/employees/:eid/joinable-meetings', (req, res) => {
+  db.func('view_joinable_meetings', [req.params.eid]).then(
+    (data) => {
+      res.send(data)
+  }) 
 })
 
 app.get('*', (req, res) => {
