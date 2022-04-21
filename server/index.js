@@ -51,13 +51,14 @@ const port = process.env.PORT || 8080
 
 //UNCOMMENT THIS IF YOU WANT TO USE LOCAL DB
 
-/*const db = pgp({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-})*/
+// const db = pgp({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DATABASE,
+//   password: process.env.DB_PASSWORD,
+//   port: process.env.DB_PORT,
+// })
+
 
 //THIS DB is used for production, its the heroku DB and will automatically switch urls.
 const cn = {
@@ -66,8 +67,8 @@ const cn = {
     rejectUnauthorized: false,
   },
 }
+const db = pgp(cn)
 
-// const db = pgp(cn)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

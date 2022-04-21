@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const StyledInput = styled.input`
   border-style: dotted;
-  width: 100%;
+  width: ${(props) => props.width ?? '100%'};
 `
 
 export const Label = styled.label`
@@ -25,7 +25,8 @@ export const Label = styled.label`
 `
 
 export const InputGroup = styled.div`
-  padding: 15px 30px;
+  padding: ${(props) => props.padding ?? '15px 30px'};
+  margin: ${(props) => props.margin};
   display: flex;
   flex-direction: column;
   align-items: flex-start;
