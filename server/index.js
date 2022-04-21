@@ -59,6 +59,7 @@ const port = process.env.PORT || 8080
 //   port: process.env.DB_PORT,
 // })
 
+
 //THIS DB is used for production, its the heroku DB and will automatically switch urls.
 const cn = {
   connectionString: process.env.DATABASE_URL,
@@ -66,8 +67,8 @@ const cn = {
     rejectUnauthorized: false,
   },
 }
-
 const db = pgp(cn)
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
