@@ -1,10 +1,5 @@
 import styled from 'styled-components'
 
-export const LargeLogo = styled.img`
-  height: 155px;
-  width: 196px;
-`
-
 export const CenteredDiv = styled.div`
   flex-direction: column;
   display: flex;
@@ -12,14 +7,20 @@ export const CenteredDiv = styled.div`
   justify-content: center;
   gap: 40px;
 
-  padding-top: 80px;
+  padding-top: 90px;
 `
 export const BigText = styled.p`
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 500;
-  font-size: 70px;
+  font-size: 62px;
   line-height: 16px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 1.25px;
+  text-transform: capitalize;
+  color: #000000;
 `
 export const SmallText = styled.p`
   font-family: 'Roboto';
