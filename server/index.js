@@ -63,17 +63,17 @@ const port = process.env.PORT || 8080
 const cn = {
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false
-  }
-};
+    rejectUnauthorized: false,
+  },
+}
 
-const db = pgp(cn);
+const db = pgp(cn)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-app.get('/api', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
