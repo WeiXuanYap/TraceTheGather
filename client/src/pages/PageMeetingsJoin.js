@@ -12,7 +12,7 @@ export default function PageMeetingsJoin() {
   const [employees, setEmployees] = useState([])
   const [meetings, setMeetings] = useState([])
   const [search, setSearch] = useState('')
-  const date = new Date()
+  const date = new Date().toISOString()
 
   const getEmployees = async () => {
     try {
