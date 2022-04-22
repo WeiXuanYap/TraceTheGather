@@ -95,7 +95,8 @@ const SickText = styled.p`
   align-items: center;
 
   color: #ff0000;
-  padding-left: 1.5em;
+  padding-left: 4em;
+  margin-bottom: -10px;
 `
 
 export default function HealthDec(props) {
@@ -152,34 +153,37 @@ export default function HealthDec(props) {
 
   return (
     <>
-      {showLoading ? (
-        <Loading />
-      ) : (
-        <RightDiv>
-          {completed.length !== 0 ? (
-            <Completed>
-              <Image src={tick} alt="tick" />
-              <BigText> Completed </BigText>
-              <SmallLabel> Health Declaration</SmallLabel>
-            </Completed>
-          ) : (
-            <Uncompleted onClick={() => setShowAddTemp(true)}>
-              <Image src={cross} alt="cross" />
-              <BigText> Uncompleted </BigText>
-              <SmallLabel> Health Declaration</SmallLabel>
-            </Uncompleted>
-          )}
-          {showAddTemp && (
-            <Modal>
-              <form>
-                <InputGroup>
-                  <Label> Temperature (in degrees)</Label>
-                  <StyledInput
-                    value={temp}
-                    onChange={(e) => setTemp(e.target.value)}
-                  />
-                </InputGroup>
-                {temp < 37.6 ? (
+      <RightDiv>
+        {showLoading ? (
+          <Loading />
+        ) : (
+          <>
+            {completed.length !== 0 ? (
+              <Completed>
+                <Image src={tick} alt="tick" />
+                <BigText> Completed </BigText>
+                <SmallLabel> Health Declaration</SmallLabel>
+              </Completed>
+            ) : (
+              <Uncompleted onClick={() => setShowAddTemp(true)}>
+                <Image src={cross} alt="cross" />
+                <BigText> Uncompleted </BigText>
+                <SmallLabel> Health Declaration</SmallLabel>
+              </Uncompleted>
+            )}
+            {showAddTemp && (
+              <Modal>
+                <form>
+                  <InputGroup>
+                    <Label> Temperature (in degrees)</Label>
+                    <StyledInput
+                      value={temp}
+                      onChange={(e) => setTemp(e.target.value)}
+                    />
+                  </InputGroup>
+                  {temp >= 37.6 && (
+                    <SickText> You are too sick to work!</SickText>
+                  )}
                   <ButtonContainer>
                     <TextButton
                       enabled={false}
@@ -194,37 +198,35 @@ export default function HealthDec(props) {
                       Confirm
                     </TextButton>
                   </ButtonContainer>
-                ) : (
-                  <SickText> You are too sick to work!</SickText>
-                )}
-              </form>
-            </Modal>
-          )}
-          {showConfirm && (
-            <Modal width="40%">
-              <form>
-                <ConfirmationText>
-                  Confirm declaration of temperature?
-                </ConfirmationText>
-                <ConfirmationText>
-                  You will not be able to redeclare afterwards.
-                </ConfirmationText>
-                <ButtonContainer>
-                  <TextButton
-                    enabled={false}
-                    onClick={() => setShowConfirm(false)}
-                  >
-                    Cancel
-                  </TextButton>
-                  <TextButton enabled={true} onClick={declareHealth}>
-                    Confirm
-                  </TextButton>
-                </ButtonContainer>
-              </form>
-            </Modal>
-          )}
-        </RightDiv>
-      )}
+                </form>
+              </Modal>
+            )}
+            {showConfirm && (
+              <Modal width="40%">
+                <form>
+                  <ConfirmationText>
+                    Confirm declaration of temperature?
+                  </ConfirmationText>
+                  <ConfirmationText>
+                    You will not be able to redeclare afterwards.
+                  </ConfirmationText>
+                  <ButtonContainer>
+                    <TextButton
+                      enabled={false}
+                      onClick={() => setShowConfirm(false)}
+                    >
+                      Cancel
+                    </TextButton>
+                    <TextButton enabled={true} onClick={declareHealth}>
+                      Confirm
+                    </TextButton>
+                  </ButtonContainer>
+                </form>
+              </Modal>
+            )}
+          </>
+        )}
+      </RightDiv>
     </>
   )
 }
