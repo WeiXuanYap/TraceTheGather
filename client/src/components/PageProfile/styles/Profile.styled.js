@@ -47,7 +47,7 @@ export const Data = styled.div`
 `
 
 export const ProfileBox = styled.div`
-  background: #fafafa;
+  background: #ffffff;
   border: 1px solid #ebebeb;
   box-sizing: border-box;
   border-radius: 4px;
