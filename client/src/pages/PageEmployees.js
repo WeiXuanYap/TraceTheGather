@@ -6,22 +6,25 @@ import CheckHealth from '../components/PageEmployees/CheckHealth'
 import SearchInput from '../components/SearchInput'
 import { MainDiv } from '../components/Sidebar/styles/AdminSidebar.styled'
 import Return from '../components/Return'
-import { ButtonContainer } from '../components/Form/Form.styled'
+import Loading from '../components/Loading'
 
 export default function PageEmployees() {
   const [employees, setEmployees] = useState([])
   const [search, setSearch] = useState('')
+  const [showLoading, setShowLoading] = useState(true)
 
   const getEmployees = async () => {
     try {
+      setShowLoading(true)
       const response = await fetch('/api/employees')
       const jsonData = await response.json()
 
       console.log(jsonData)
-
       setEmployees(jsonData)
     } catch (err) {
       console.error(err.message)
+    } finally {
+      setShowLoading(false)
     }
   }
 
@@ -40,25 +43,29 @@ export default function PageEmployees() {
         />
         <AddEmployee />
         <CheckHealth />
-        <TableEmployee
-          data={employees.filter((emp) => {
-            for (const property in emp) {
-              if (
-                property === 'eid' ||
-                property === 'ename' ||
-                property === 'role'
-              ) {
+        {showLoading ? (
+          <Loading />
+        ) : (
+          <TableEmployee
+            data={employees.filter((emp) => {
+              for (const property in emp) {
                 if (
-                  String(emp[property])
-                    .toLowerCase()
-                    .includes(search.toLowerCase())
+                  property === 'eid' ||
+                  property === 'ename' ||
+                  property === 'role'
                 ) {
-                  return emp
+                  if (
+                    String(emp[property])
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
+                  ) {
+                    return emp
+                  }
                 }
               }
-            }
-          })}
-        />
+            })}
+          />
+        )}
       </MainDiv>
     </>
   )

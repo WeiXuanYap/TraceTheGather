@@ -51,24 +51,22 @@ const port = process.env.PORT || 8080
 
 //UNCOMMENT THIS IF YOU WANT TO USE LOCAL DB
 
-/*const db = pgp({
+const db = pgp({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DATABASE,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-})*/
-
+})
 
 //THIS DB is used for production, its the heroku DB and will automatically switch urls.
-const cn = {
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-}
-const db = pgp(cn)
-
+// const cn = {
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false,
+//   },
+// }
+// const db = pgp(cn)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
@@ -169,7 +167,9 @@ app.post('/api/login', (req, res) => {
  */
 
 app.get('/api/departments', (req, res) => {
-  db.query('SELECT d.did as did, d.dname as dname, (SELECT COUNT(*) FROM Employees as e WHERE E.did = d.did) as employee_count FROM departments as d;').then((data) => {
+  db.query(
+    'SELECT d.did as did, d.dname as dname, (SELECT COUNT(*) FROM Employees as e WHERE E.did = d.did) as employee_count FROM departments as d;'
+  ).then((data) => {
     res.send(data)
   })
 })
@@ -259,12 +259,20 @@ date DATE
 temp NUMERIC
 */
 app.post('/api/employees/:id/health_declaration', (req, res) => {
-  db.proc(
-    'declare_health',
-    [req.params.id].then((data) => {
+  db.proc('declare_health', [req.params.id, req.body.date, req.body.temp]).then(
+    (data) => {
       res.send(data)
-    })
+    }
   )
+})
+
+app.get('/api/employees/:id/health_declaration', (req, res) => {
+  db.query(
+    'SELECT temp FROM Health_Declaration WHERE eid = $1 AND date = CURRENT_DATE',
+    [req.params.id]
+  ).then((data) => {
+    res.send(data)
+  })
 })
 
 //Contact_tracing function
@@ -499,10 +507,9 @@ app.post('/api/employees/approve-meeting', (req, res) => {
  * returns floor, room, date, start_hour
  */
 app.get('/api/employees/:eid/joinable-meetings', (req, res) => {
-  db.func('view_joinable_meetings', [req.params.eid]).then(
-    (data) => {
-      res.send(data)
-  }) 
+  db.func('view_joinable_meetings', [req.params.eid]).then((data) => {
+    res.send(data)
+  })
 })
 
 app.get('*', (req, res) => {

@@ -35,19 +35,15 @@ export default function TableDepartments(props) {
             ))}
           </Row>
           {props.data
-            .filter((dpt) => {
-              if (dpt.did > 0) {
-                return dpt
-              }
-              return null
-            })
+            .filter((dpt) => dpt.did !== 0)
             .map((dpt, index) => (
               <Row key={dpt.did}>
                 <Data> {index + 1} </Data>
                 <Data>{dpt.did}</Data>
                 <Data>{dpt.dname}</Data>
+                <Data>{dpt.employee_count}</Data>
                 <Data>
-                  {dpt.employee_number > 0 ? (
+                  {dpt.employee_count > 0 ? (
                     <Icon src={greyedTrash} alt="delete" />
                   ) : (
                     <Icon

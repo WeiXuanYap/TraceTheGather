@@ -8,7 +8,7 @@ export const Data = styled.td`
   line-height: 28px;
   /* identical to box height, or 175% */
 
-  width: 25%;
+  width: 100%;
   text-align: left;
   padding: 20px;
 
@@ -17,7 +17,7 @@ export const Data = styled.td`
   color: #333333;
 `
 export const Header = styled.th`
-  width: 30%;
+  width: 100%;
   text-align: left;
   padding: 20px;
 
@@ -88,7 +88,7 @@ export const TableContainer = styled.table`
   border: 1px solid black;
   border-collapse: collapse;
   margin-bottom: 100px;
-
+  margin-top: ${(props) => props.marginTop};
   & ${Row}:nth-child(even) {
     background: #ffffff;
   }

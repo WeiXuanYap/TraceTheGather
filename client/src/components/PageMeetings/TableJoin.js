@@ -11,7 +11,7 @@ export default function TableJoin(props) {
 
   return (
     <>
-      <TableContainer>
+      <TableContainer marginTop="60px">
         <tbody>
           <Row>
             {headers.map((hdr) => (
