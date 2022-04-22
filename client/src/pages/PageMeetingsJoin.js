@@ -37,7 +37,7 @@ export default function PageMeetingsJoin() {
 
   const getMeetings = async () => {
     try {
-      const response = await fetch('/api/employees/joinable-meetings')
+      const response = await fetch(`/api/employees/${id}/joinable-meetings`)
       const jsonData = await response.json()
       console.log(jsonData)
       setMeetings(jsonData)
@@ -66,7 +66,7 @@ export default function PageMeetingsJoin() {
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 <MeetingTabs emp={emp} joinSelected={true} />
-                <Return emp={emp} />
+                <Return />
                 <TableJoin
                   data={meetings.filter((mtg) => {
                     for (const property in mtg) {

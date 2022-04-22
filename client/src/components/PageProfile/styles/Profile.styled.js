@@ -51,5 +51,5 @@ export const ProfileBox = styled.div`
   border: 1px solid #ebebeb;
   box-sizing: border-box;
   border-radius: 4px;
-  padding: 60px 20px 0 30px;
+  padding: 120px 20px 0 30px;
 `

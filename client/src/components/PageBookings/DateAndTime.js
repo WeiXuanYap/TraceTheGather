@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
+import { useParams } from 'react-router-dom'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -10,6 +11,7 @@ export default function Booking(props) {
   const [startDate, setStartDate] = useState(new Date())
   const [timeStart, setTimeStart] = useState('08:00')
   const [timeEnd, setTimeEnd] = useState('09:00')
+  const { id } = useParams()
 
   const handleBook = async (e) => {
     e.preventDefault()
@@ -20,9 +22,9 @@ export default function Booking(props) {
         date: startDate,
         start_hour: timeStart,
         end_hour: timeEnd,
-        eid: props.data.id,
+        eid: id,
       }
-      const response = await fetch('/api/employees/:id/rooms/book', {
+      const response = await fetch(`/api/employees/${id}/rooms/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

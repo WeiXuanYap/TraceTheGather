@@ -5,6 +5,7 @@ import Return from '../components/Return'
 import EmpSidebar from '../components/Sidebar/EmpSidebar'
 import { MainDiv } from '../components/Sidebar/styles/AdminSidebar.styled'
 import Loading from '../components/Loading'
+import HealthDec from '../components/PageProfile/HealthDec'
 
 export default function PageProfile() {
   const { id } = useParams()
@@ -42,6 +43,7 @@ export default function PageProfile() {
               <MainDiv>
                 <Return emp={emp} fromEmployees={true} />
                 <Profile emp={emp} />
+                <HealthDec emp={emp} />
               </MainDiv>
             </div>
           ))

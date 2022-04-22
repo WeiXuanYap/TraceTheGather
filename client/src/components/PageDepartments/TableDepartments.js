@@ -34,44 +34,47 @@ export default function TableDepartments(props) {
               <Header key={hdr}> {hdr} </Header>
             ))}
           </Row>
-          {props.data.map((dpt, index) => (
-            <Row key={dpt.did}>
-              <Data> {index + 1} </Data>
-              <Data>{dpt.did}</Data>
-              <Data>{dpt.dname}</Data>
-              <Data>
-                {dpt.employee_count > 0 ? (
-                  <Icon src={greyedTrash} alt="delete" />
-                ) : (
-                  <Icon
-                    src={trash}
-                    alt="delete"
-                    onClick={() => setShowConfirm(dpt.did)}
-                  />
-                )}
-              </Data>
+          {props.data
+            .filter((dpt) => dpt.did !== 0)
+            .map((dpt, index) => (
+              <Row key={dpt.did}>
+                <Data> {index + 1} </Data>
+                <Data>{dpt.did}</Data>
+                <Data>{dpt.dname}</Data>
+                <Data>{dpt.employee_count}</Data>
+                <Data>
+                  {dpt.employee_count > 0 ? (
+                    <Icon src={greyedTrash} alt="delete" />
+                  ) : (
+                    <Icon
+                      src={trash}
+                      alt="delete"
+                      onClick={() => setShowConfirm(dpt.did)}
+                    />
+                  )}
+                </Data>
 
-              {showConfirm === dpt.did && (
-                <Modal width="50%" margin="100px auto">
-                  <ConfirmationText>
-                    Are you sure you want to remove the '{dpt.dname}'
-                    department?
-                  </ConfirmationText>
-                  <ButtonContainer>
-                    <TextButton onClick={() => setShowConfirm(Infinity)}>
-                      Cancel
-                    </TextButton>
-                    <TextButton
-                      enabled={true}
-                      onClick={() => handleDelete(dpt.did)}
-                    >
-                      Confirm
-                    </TextButton>
-                  </ButtonContainer>
-                </Modal>
-              )}
-            </Row>
-          ))}
+                {showConfirm === dpt.did && (
+                  <Modal width="50%" margin="100px auto">
+                    <ConfirmationText>
+                      Are you sure you want to remove the '{dpt.dname}'
+                      department?
+                    </ConfirmationText>
+                    <ButtonContainer>
+                      <TextButton onClick={() => setShowConfirm(Infinity)}>
+                        Cancel
+                      </TextButton>
+                      <TextButton
+                        enabled={true}
+                        onClick={() => handleDelete(dpt.did)}
+                      >
+                        Confirm
+                      </TextButton>
+                    </ButtonContainer>
+                  </Modal>
+                )}
+              </Row>
+            ))}
         </tbody>
       </TableContainer>
     </>

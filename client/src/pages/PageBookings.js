@@ -4,9 +4,8 @@ import Return from '../components/Return'
 import EmpSidebar from '../components/Sidebar/EmpSidebar'
 import { MainDiv } from '../components/Sidebar/styles/AdminSidebar.styled'
 import Loading from '../components/Loading'
-import TableBookings from '../components/PageBookings/TableBookings'
+import Bookings from '../components/PageBookings/Bookings'
 import SearchInput from '../components/SearchInput'
-import AddBooking from '../components/PageBookings/AddBooking'
 
 export default function PageBookings() {
   const { id } = useParams()
@@ -62,13 +61,13 @@ export default function PageBookings() {
             <div key={emp.eid}>
               <EmpSidebar isSelectedBookings={true} emp={emp} />
               <MainDiv>
-                <Return emp={emp} />
+                <Return />
                 <SearchInput
                   placeholder="Search Room Bookings"
                   onChange={(e) => setSearch(e.target.value)}
                 />
-                <AddBooking emp={emp} />
-                <TableBookings
+                <Bookings
+                  emp={emp}
                   data={bookings.filter((bkg) => {
                     for (const property in bkg) {
                       if (
