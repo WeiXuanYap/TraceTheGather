@@ -22,7 +22,7 @@ BEGIN
         new_eid:= new_eid + 1;
     END IF;
 
-    SELECT CONCAT(LOWER(REGEXP_REPLACE(e_name, '\s', '')), CAST(new_eid AS VARCHAR(50)), '@demo_company.com') into new_email;
+    SELECT CONCAT(LOWER(REPLACE(e_name, ' ', '')), CAST(new_eid AS VARCHAR(50)), '@demo_company.com') into new_email;
     SELECT CONCAT('password', CAST(new_eid AS VARCHAR(50))) into new_password;
     /*
     SELECT max(eid) INTO new_eid FROM Employees;
@@ -173,6 +173,8 @@ CREATE OR REPLACE FUNCTION search_room
     (IN required_cap INTEGER, IN query_date DATE, IN start_hour TIME, IN end_hour TIME)
 RETURNS TABLE(floor INTEGER, room INTEGER, did INTEGER, available_capacity INTEGER) AS $$
 BEGIN
+
+
 
     RETURN QUERY 
     --get the latest updates: step 1 and 2

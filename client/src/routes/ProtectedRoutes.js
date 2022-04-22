@@ -12,7 +12,9 @@ export default function ProtectedRoutes() {
 
       const parseRes = await res.json()
 
-      parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false)
+      parseRes.id ? setIsAuthenticated(true) : setIsAuthenticated(false)
+
+      console.log(parseRes.id)
     } catch (err) {
       console.error(err.message)
     }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 import IconButton from '../IconButton'
 import addIcon from '../../assets/AddEmployee.svg'
 import Modal from '../Modal'
@@ -10,6 +11,21 @@ import {
   ButtonContainer,
 } from '../Form/Form.styled'
 
+const Error = styled.div`
+font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  /* or 150% */
+
+  display: flex;
+  align-items: center;
+
+  color: #ff0000;
+  padding-left: 2em;
+  margin-bottom: -10px;`
+
 export default function AddEmployee() {
   const [showAddEmployee, setShowAddEmployee] = useState(false)
 
@@ -20,9 +36,19 @@ export default function AddEmployee() {
   const [homeNum, setHomeNum] = useState('')
   const [officeNum, setOfficeNum] = useState('')
 
+  const [error, setError] = useState('')
+
+
   //Adding an employee
   const handleAdd = async (e) => {
     e.preventDefault()
+
+    if(!Number.isInteger(mobileNum)) {
+      return setError('Mobile Number needs to be an Integer');
+    }
+
+    setError("")
+
     try {
       const body = {
         did: did,
@@ -109,6 +135,7 @@ export default function AddEmployee() {
               />
             </InputGroup>
           </form>
+          {error && <Error>{error}</Error>}
           <ButtonContainer>
             <TextButton
               enabled={false}
@@ -119,6 +146,7 @@ export default function AddEmployee() {
             <TextButton enabled={true} onClick={handleAdd}>
               Confirm
             </TextButton>
+            
           </ButtonContainer>
         </Modal>
       )}

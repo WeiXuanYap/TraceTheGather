@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import IconButton from './IconButton'
 import houseIcon from '../assets/House.svg'
 import logoutIcon from '../assets/Logout.svg'
@@ -15,6 +16,22 @@ const Container = styled.div`
 export default function Return(props) {
   const navigate = useNavigate()
 
+  var parseRes = "";
+
+  const checkAdmin = async() => {
+    try {
+      const res = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { jwt_token: localStorage.token },
+      })
+
+      parseRes = await res.json()
+            
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+
   const logout = async (e) => {
     e.preventDefault()
     try {
@@ -24,6 +41,10 @@ export default function Return(props) {
       console.error(err.message)
     }
   }
+
+  useEffect(() => {
+    checkAdmin()
+  }, [])
 
   return (
     <Container>
@@ -36,14 +57,14 @@ export default function Return(props) {
           Return to Employee Page
         </IconButton>
       )}
-      <IconButton
+      {parseRes.role === 'Admin' && <IconButton
         src={houseIcon}
         size={'13px'}
         padding={'10px 10px 0 30px'}
         onClick={() => navigate('/admin')}
       >
         Return to Admin Page
-      </IconButton>
+      </IconButton>}
       <IconButton
         src={logoutIcon}
         size={'13px'}

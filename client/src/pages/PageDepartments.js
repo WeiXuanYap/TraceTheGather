@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AddDepartment from '../components/PageDepartments/AddDepartment'
 import AdminSidebar from '../components/Sidebar/AdminSidebar'
 import SearchInput from '../components/SearchInput'
@@ -8,6 +9,7 @@ import Return from '../components/Return'
 import Loading from '../components/Loading'
 
 export default function PageDepartments() {
+  const navigate = useNavigate();
   const [departments, setDepartments] = useState([])
   const [search, setSearch] = useState('')
   const [showLoading, setShowLoading] = useState(true)
@@ -27,7 +29,27 @@ export default function PageDepartments() {
     }
   }
 
+  const checkAdmin = async() => {
+    try {
+      const res = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { jwt_token: localStorage.token },
+      })
+
+      const parseRes = await res.json()
+      console.log(parseRes)
+
+      if (parseRes.role !== 'Admin') {
+        navigate(`/profile/${parseRes.id}`)
+      }
+            
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+
   useEffect(() => {
+    checkAdmin()
     getDepartments()
   }, [])
 

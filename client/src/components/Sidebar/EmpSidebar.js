@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import SidebarButton from './SidebarButton'
 import EmployeeIconDefault from '../../assets/Sidebar/employees.svg'
 import EmployeeIconSelected from '../../assets/Sidebar/employees_selected.svg'
@@ -18,9 +19,30 @@ import logo from '../../assets/Logo.png'
 
 export default function EmpSidebar(props) {
   const navigate = useNavigate()
+
+  var parseRes = "";
+
+  const checkAdmin = async() => {
+    try {
+      const res = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { jwt_token: localStorage.token },
+      })
+
+      parseRes = await res.json()
+            
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+
+  useEffect(() => {
+    checkAdmin()
+  }, [])
+
   return (
     <LeftContainer>
-      <SmallText> Admin Access </SmallText>
+      {parseRes.role === 'Admin' && <SmallText> Admin Access </SmallText>}
       <Logo src={logo} alt="logo" />
 
       <div key={props.emp.eid}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Profile from '../components/PageProfile/Profile'
 import Return from '../components/Return'
 import EmpSidebar from '../components/Sidebar/EmpSidebar'
@@ -8,9 +8,29 @@ import Loading from '../components/Loading'
 import HealthDec from '../components/PageProfile/HealthDec'
 
 export default function PageProfile() {
+  const navigate = useNavigate()
   const { id } = useParams()
   const [employees, setEmployees] = useState([])
   const [showLoading, setShowLoading] = useState(false)
+
+  const checkUser = async() => {
+    try {
+      const res = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { jwt_token: localStorage.token },
+      })
+
+      const parseRes = await res.json()
+      console.log(parseRes)
+
+      if (parseRes.id !== id && parseRes.role !== 'Admin') {
+        navigate(`/profile/${parseRes.id}`)
+      }
+            
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
 
   const getEmployees = async () => {
     try {
@@ -27,6 +47,7 @@ export default function PageProfile() {
   }
 
   useEffect(() => {
+    checkUser()
     getEmployees()
   }, [])
 

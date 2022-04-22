@@ -115,6 +115,7 @@ const verifyJWT = (req, res, next) => {
       } else {
         //token is valid
         req.userID = decoded.id
+        req.role = decoded.role
         next()
       }
     })
@@ -123,7 +124,10 @@ const verifyJWT = (req, res, next) => {
 
 app.post('/api/verify', verifyJWT, (req, res) => {
   try {
-    res.json(true)
+    const id = req.userID
+    const role = req.role
+    res.json({id: id, role: role})
+    //res.json(true)
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server error')
@@ -145,10 +149,11 @@ app.post('/api/login', (req, res) => {
           req.session.user = user
 
           const id = user.eid
-          const token = jwt.sign({ id }, 'jwtSecret', {
+          const role = user.role
+          const token = jwt.sign({ id: id, role: role }, 'jwtSecret', {
             expiresIn: 3000, //token expires in 50 minutes
           })
-          res.json({ auth: true, id: id, jwtToken: token })
+          res.json({ auth: true, id: id, role: role, jwtToken: token })
         } else {
           res.json({ auth: false, message: 'Incorrect username/password' }) //returns false value if password does not match
         }
@@ -245,8 +250,10 @@ app.post('/api/employees/non_compliance', (req, res) => {
  * Select specific employee
  * ID - Integer
  */
-app.get('/api/employees/:id', (req, res) => {
-  db.query('SELECT * FROM Employees WHERE eid = $1', [req.params.id]).then(
+
+
+app.get('/api/employees/:id/health_declaration', (req,res) => {
+  db.query('SELECT temp FROM Health_Declaration WHERE eid = $1 AND date = CURRENT_DATE', [req.params.id]). then(
     (data) => {
       res.send(data)
     }
@@ -262,17 +269,7 @@ app.post('/api/employees/:id/health_declaration', (req, res) => {
   db.proc('declare_health', [req.params.id, req.body.date, req.body.temp]).then(
     (data) => {
       res.send(data)
-    }
-  )
-})
-
-app.get('/api/employees/:id/health_declaration', (req, res) => {
-  db.query(
-    'SELECT temp FROM Health_Declaration WHERE eid = $1 AND date = CURRENT_DATE',
-    [req.params.id]
-  ).then((data) => {
-    res.send(data)
-  })
+    })
 })
 
 //Contact_tracing function
