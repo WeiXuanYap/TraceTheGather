@@ -250,13 +250,6 @@ app.post('/api/employees/non_compliance', (req, res) => {
  * Select specific employee
  * ID - Integer
  */
-app.get('/api/employees/:id', (req, res) => {
-  db.query('SELECT * FROM Employees WHERE eid = $1', [req.params.id]).then(
-    (data) => {
-      res.send(data)
-    }
-  )
-})
 
 
 app.get('/api/employees/:id/health_declaration', (req,res) => {
