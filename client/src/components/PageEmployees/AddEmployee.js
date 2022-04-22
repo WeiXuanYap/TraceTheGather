@@ -91,14 +91,12 @@ export default function AddEmployee() {
     if (throwError) {
       return setError('Department with that ID does not exist!')
     }
-
     if (!Number.isInteger(parseInt(homeNum)) && homeNum !== '') {
       return setError('Home Number has to be an integer!')
     }
     if (!Number.isInteger(parseInt(officeNum)) && officeNum !== '') {
       return setError('Office Number has to be an integer!')
     }
-
     setError('')
 
     try {

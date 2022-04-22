@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import IconButton from './IconButton'
 import houseIcon from '../assets/House.svg'
 import logoutIcon from '../assets/Logout.svg'
@@ -15,8 +15,7 @@ const Container = styled.div`
 
 export default function Return(props) {
   const navigate = useNavigate()
-
-  var parseRes = "";
+  const [user, setUser] = useState("");
 
   const checkAdmin = async() => {
     try {
@@ -25,7 +24,9 @@ export default function Return(props) {
         headers: { jwt_token: localStorage.token },
       })
 
-      parseRes = await res.json()
+      const parseRes = await res.json()
+      setUser(parseRes.role)
+
             
     } catch (err) {
       console.error(err.message)
@@ -57,7 +58,7 @@ export default function Return(props) {
           Return to Employee Page
         </IconButton>
       )}
-      {parseRes.role === 'Admin' && <IconButton
+      {user === 'Admin' && <IconButton
         src={houseIcon}
         size={'13px'}
         padding={'10px 10px 0 30px'}
