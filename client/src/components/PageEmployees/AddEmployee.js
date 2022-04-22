@@ -38,7 +38,7 @@ export default function AddEmployee() {
   const [homeNum, setHomeNum] = useState('')
   const [officeNum, setOfficeNum] = useState('')
   const [error, setError] = useState('')
-  const [throwError, setThrowError] = useState(true)
+  const [throwError, setThrowError] = useState(0)
 
   const getDepartments = async () => {
     try {
@@ -84,13 +84,15 @@ export default function AddEmployee() {
       return setError('Department ID has to be an integer!')
     }
     for (const dpt of departments) {
+      setThrowError(throwError + 1)
       if (String(dpt.did) === did) {
-        setThrowError(false)
+        break
+      }
+      if (String(dpt.did) !== did && throwError + 1 === departments.length) {
+        return setError('Department with that ID does not exist!')
       }
     }
-    if (throwError) {
-      return setError('Department with that ID does not exist!')
-    }
+
     if (!Number.isInteger(parseInt(homeNum)) && homeNum !== '') {
       return setError('Home Number has to be an integer!')
     }

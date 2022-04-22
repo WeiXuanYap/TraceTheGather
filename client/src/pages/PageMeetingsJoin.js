@@ -15,7 +15,11 @@ export default function PageMeetingsJoin() {
   const [search, setSearch] = useState('')
   const [showLoading, setShowLoading] = useState(true)
 
-  const date = new Date().toISOString()
+  const date = new Date(
+    new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000
+  )
+    .toISOString()
+    .split('T')[0]
 
   const getEmployees = async () => {
     try {

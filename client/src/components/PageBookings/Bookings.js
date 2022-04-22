@@ -19,6 +19,7 @@ import changeCap from '../../assets/change_capacity.svg'
 import Modal from '../Modal'
 import ConfirmationText from '../ConfirmationText'
 import TextButton from '../TextButton'
+import { Error } from '../PageEmployees/AddEmployee'
 
 const ButtonGroup = styled.div`
   display: flex;
@@ -33,6 +34,8 @@ export default function Bookings(props) {
   const [newCapacity, setNewCapacity] = useState()
   const [showBook, setShowBook] = useState(false)
   const [booking, setBooking] = useState({})
+  const [date, setDate] = useState('')
+  const [error, setError] = useState('')
 
   const navigate = useNavigate()
   const { id } = useParams()
@@ -51,13 +54,28 @@ export default function Bookings(props) {
     }
   }
 
-  const changeCapacity = async (id) => {
+  const changeCapacity = async (bkg) => {
     try {
-      const response = await fetch(`/api/departments/${id}`, {
-        method: 'DELETE',
-      })
+      if (!Number.isInteger(parseInt(date)) || date.length !== 8) {
+        return setError('Date must be in the format of YYYYMMDD!')
+      }
+      const body = {
+        floor: bkg.floor,
+        room: bkg.room,
+        new_capacity: newCapacity,
+        date: date,
+        mid: id,
+      }
+      console.log(body)
+      const response = await fetch(
+        `/api/employees/${id}/rooms/change_capacity`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        }
+      )
       console.log(response)
-
       window.location.reload()
     } catch (err) {
       console.error(err.message)
@@ -128,17 +146,22 @@ export default function Bookings(props) {
                     <Modal width="50%" margin="100px auto">
                       <form>
                         <InputGroup>
-                          <Label> Old Capacity </Label>
-                          <StyledInput value={bkg.room_capacity} />
+                          <Label> Date </Label>
+                          <StyledInput
+                            value={date}
+                            placeholder="Date"
+                            onChange={(e) => setDate(e.target.value)}
+                          />
                         </InputGroup>
                         <InputGroup>
                           <Label> New Capacity </Label>
                           <StyledInput
                             placeholder="New Capacity of Room"
                             type="text"
-                            onChange={(e) => setNewCapacity(e)}
+                            onChange={(e) => setNewCapacity(e.target.value)}
                           />
                         </InputGroup>
+                        <Error> {error} </Error>
                       </form>
                       <ButtonContainer>
                         <TextButton onClick={() => setShowChangeCap('')}>
@@ -146,7 +169,7 @@ export default function Bookings(props) {
                         </TextButton>
                         <TextButton
                           enabled={true}
-                          onClick={() => changeCapacity(bkg.did)}
+                          onClick={() => changeCapacity(bkg)}
                         >
                           Confirm
                         </TextButton>

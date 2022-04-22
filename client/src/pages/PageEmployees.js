@@ -10,7 +10,7 @@ import Return from '../components/Return'
 import Loading from '../components/Loading'
 
 export default function PageEmployees() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [employees, setEmployees] = useState([])
   const [search, setSearch] = useState('')
   const [showLoading, setShowLoading] = useState(true)
@@ -30,7 +30,7 @@ export default function PageEmployees() {
     }
   }
 
-  const checkAdmin = async() => {
+  const checkAdmin = async () => {
     try {
       const res = await fetch('/api/verify', {
         method: 'POST',
@@ -43,7 +43,6 @@ export default function PageEmployees() {
       if (parseRes.role !== 'Admin') {
         navigate(`/profile/${parseRes.id}`)
       }
-            
     } catch (err) {
       console.error(err.message)
     }
@@ -64,7 +63,6 @@ export default function PageEmployees() {
           onChange={(e) => setSearch(e.target.value)}
         />
         <AddEmployee />
-        <CheckHealth />
         {showLoading ? (
           <Loading />
         ) : (
