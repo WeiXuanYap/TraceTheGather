@@ -18,9 +18,13 @@ export default function Profile(props) {
         <Header> Mobile Contact </Header>
         <Data> +65 {props.emp.mobile_num}</Data>
         <Header> Home Contact </Header>
-        <Data> {props.emp.home_num === '' ? 'Not Provided'}</Data>
+        <Data>
+          {props.emp.home_num === '' ? 'Not Provided' : props.emp.home_num}
+        </Data>
         <Header> Office Contact </Header>
-        <Data> {props.emp.office_num === '' && 'Not Provided'}</Data>
+        <Data>
+          {props.emp.office_num === '' ? 'Not Provided' : props.emp.office_num}
+        </Data>
         <Header> Department ID </Header>
         <Data> {props.emp.did}</Data>
         <Header> Role </Header>

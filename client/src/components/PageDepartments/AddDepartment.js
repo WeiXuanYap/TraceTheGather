@@ -9,16 +9,28 @@ import {
   ButtonContainer,
 } from '../Form/Form.styled'
 import TextButton from '../TextButton'
+import { Error } from '../PageEmployees/AddEmployee'
 
 export default function AddDepartment() {
   const [showAddDept, setShowAddDept] = useState(false)
 
   const [dname, setDname] = useState('')
   const [did, setDid] = useState('')
+  const [error, setError] = useState('')
 
   //Adding a department
   const handleAdd = async (e) => {
     e.preventDefault()
+    if (did === '') {
+      return setError('Department ID cannot be empty!')
+    }
+    if (!Number.isInteger(parseInt(did))) {
+      return setError('Department ID has to be an integer!')
+    }
+    if (dname === '') {
+      return setError('Department Name cannot be empty!')
+    }
+    setError('')
     try {
       const body = {
         did: did,
@@ -65,6 +77,7 @@ export default function AddDepartment() {
                 onChange={(e) => setDname(e.target.value)}
               />
             </InputGroup>
+            <Error> {error} </Error>
             <ButtonContainer>
               <TextButton enabled={false} onClick={() => setShowAddDept(false)}>
                 Cancel
