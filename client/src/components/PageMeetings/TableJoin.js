@@ -6,7 +6,7 @@ import { TableContainer, Row, Data, Header } from '../Table/Table.styled'
 import TextButton from '../TextButton'
 
 export default function TableJoin(props) {
-  const headers = ['Meeting ID', 'Room ID', 'Room Name', 'Date', 'Time', '']
+  const headers = ['Floor', 'Room', 'Date', 'Time']
   const [showConfirm, setShowConfirm] = useState(Infinity)
 
   return (
@@ -19,10 +19,16 @@ export default function TableJoin(props) {
             ))}
           </Row>
           {props.data.map((mtg, index) => (
-            <Row key={mtg.did}>
-              <Data> {index + 1} </Data>
-              <Data>{mtg.did}</Data>
-              <Data>{mtg.dname}</Data>
+            <Row key={index}>
+              <Data> {mtg.floor} </Data>
+              <Data>{mtg.room}</Data>
+              <Data>
+                {new Date(Date.parse(mtg.date))
+                  .toISOString()
+                  .slice(0, 10)
+                  .replace(/-/g, '-')}
+              </Data>
+              <Data>{mtg.start_hour}</Data>
             </Row>
           ))}
         </tbody>

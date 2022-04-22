@@ -47,6 +47,11 @@ const RightDiv = styled.div`
   right: 5%;
   top: 20%;
 `
+const LoadingDiv = styled.div`
+  position: absolute;
+  left: 500px;
+  top: 10%;
+`
 
 const BigText = styled.p`
   font-family: 'Roboto';
@@ -95,7 +100,8 @@ const SickText = styled.p`
   align-items: center;
 
   color: #ff0000;
-  padding-left: 1.5em;
+  padding-left: 4em;
+  margin-bottom: -10px;
 `
 
 export default function HealthDec(props) {
@@ -153,7 +159,9 @@ export default function HealthDec(props) {
   return (
     <>
       {showLoading ? (
-        <Loading />
+        <LoadingDiv>
+          <Loading />
+        </LoadingDiv>
       ) : (
         <RightDiv>
           {completed.length !== 0 ? (
@@ -179,24 +187,23 @@ export default function HealthDec(props) {
                     onChange={(e) => setTemp(e.target.value)}
                   />
                 </InputGroup>
-                {temp < 37.6 ? (
-                  <ButtonContainer>
-                    <TextButton
-                      enabled={false}
-                      onClick={() => setShowAddTemp(false)}
-                    >
-                      Cancel
-                    </TextButton>
-                    <TextButton
-                      enabled={true}
-                      onClick={() => setShowConfirm(true)}
-                    >
-                      Confirm
-                    </TextButton>
-                  </ButtonContainer>
-                ) : (
+                {temp >= 37.6 && (
                   <SickText> You are too sick to work!</SickText>
                 )}
+                <ButtonContainer>
+                  <TextButton
+                    enabled={false}
+                    onClick={() => setShowAddTemp(false)}
+                  >
+                    Cancel
+                  </TextButton>
+                  <TextButton
+                    enabled={true}
+                    onClick={() => setShowConfirm(true)}
+                  >
+                    Confirm
+                  </TextButton>
+                </ButtonContainer>
               </form>
             </Modal>
           )}
