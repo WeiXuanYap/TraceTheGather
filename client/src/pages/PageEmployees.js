@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AddEmployee from '../components/PageEmployees/AddEmployee'
 import AdminSideBar from '../components/Sidebar/AdminSidebar'
 import TableEmployee from '../components/PageEmployees/TableEmployee'
@@ -9,6 +10,7 @@ import Return from '../components/Return'
 import Loading from '../components/Loading'
 
 export default function PageEmployees() {
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState([])
   const [search, setSearch] = useState('')
   const [showLoading, setShowLoading] = useState(true)
@@ -28,7 +30,27 @@ export default function PageEmployees() {
     }
   }
 
+  const checkAdmin = async() => {
+    try {
+      const res = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { jwt_token: localStorage.token },
+      })
+
+      const parseRes = await res.json()
+      console.log(parseRes)
+
+      if (parseRes.role !== 'Admin') {
+        navigate(`/profile/${parseRes.id}`)
+      }
+            
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+
   useEffect(() => {
+    checkAdmin()
     getEmployees()
   }, [])
 

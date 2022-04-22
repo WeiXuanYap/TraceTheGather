@@ -106,7 +106,12 @@ export default function PageLanding({ setAuth }) {
         localStorage.setItem('token', parseRes.jwtToken)
         setAuth = true
         console.log('Logged in Successfully')
-        navigate(`/admin`)
+        if (parseRes.role === 'Admin') {
+          navigate(`/admin`)
+        } else {
+          navigate(`/profile/${parseRes.id}`)
+        }
+        
       } else {
         setAuth = false
         console.log(parseRes)

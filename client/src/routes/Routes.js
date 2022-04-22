@@ -17,7 +17,7 @@ const MeetingsApproval = React.lazy(() =>
 export const Routes = () => (
   <Suspense fallback={<Loading />}>
     <Switch>
-      <Route path="/" element={<Landing />} />
+      <Route exact path="/" element={<Landing />} />
       <Route element={<ProtectedRoutes />}>
         <Route path="/admin" element={<Admin />} />
         <Route path="/departments" element={<Departments />} />
