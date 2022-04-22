@@ -10,6 +10,7 @@ import {
   ButtonContainer,
 } from '../Form/Form.styled'
 import TextButton from '../TextButton'
+import { Error } from '../PageEmployees/AddEmployee'
 
 export default function AddBooking(props) {
   const id = useParams()
@@ -27,10 +28,44 @@ export default function AddBooking(props) {
   const [rname, setRname] = useState('')
   const [roomCapacity, setRoomCapacity] = useState('')
   const [did, setDid] = useState('')
+  const [error, setError] = useState('')
 
   //Adding a department
   const handleBook = async (e) => {
     e.preventDefault()
+    if (floor === '') {
+      return setError('Floor number cannot be empty!')
+    }
+    if (!Number.isInteger(parseInt(floor))) {
+      return setError('Floor number has to be an integer!')
+    }
+    if (room === '') {
+      return setError('Room number cannot be empty!')
+    }
+    if (!Number.isInteger(parseInt(room))) {
+      return setError('Room number has to be an integer!')
+    }
+    if (rname === '') {
+      return setError('Room name cannot be empty!')
+    }
+    if (roomCapacity === '') {
+      return setError('Room capacity cannot be empty!')
+    }
+    if (!Number.isInteger(parseInt(roomCapacity))) {
+      return setError('Room capacity has to be an integer!')
+    }
+    if (did === '') {
+      return setError('Department ID cannot be empty!')
+    }
+    if (!Number.isInteger(parseInt(did))) {
+      return setError('Department ID has to be an integer!')
+    }
+    if (did !== String(props.emp.did)) {
+      return setError(
+        'Authorisation Error: Department ID has to be the same as yours!'
+      )
+    }
+    setError('')
     try {
       const body = {
         floor: floor,
@@ -109,6 +144,7 @@ export default function AddBooking(props) {
                 onChange={(e) => setDid(e.target.value)}
               />
             </InputGroup>
+            <Error> {error} </Error>
             <ButtonContainer>
               <TextButton
                 enabled={false}
