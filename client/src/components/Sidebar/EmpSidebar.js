@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SidebarButton from './SidebarButton'
 import EmployeeIconDefault from '../../assets/Sidebar/employees.svg'
 import EmployeeIconSelected from '../../assets/Sidebar/employees_selected.svg'
@@ -19,8 +19,7 @@ import logo from '../../assets/Logo.png'
 
 export default function EmpSidebar(props) {
   const navigate = useNavigate()
-
-  var parseRes = "";
+  const [user, setUser] = useState("");
 
   const checkAdmin = async() => {
     try {
@@ -29,7 +28,8 @@ export default function EmpSidebar(props) {
         headers: { jwt_token: localStorage.token },
       })
 
-      parseRes = await res.json()
+      const parseRes = await res.json()
+      setUser(parseRes.role)
             
     } catch (err) {
       console.error(err.message)
@@ -42,7 +42,8 @@ export default function EmpSidebar(props) {
 
   return (
     <LeftContainer>
-      {parseRes.role === 'Admin' && <SmallText> Admin Access </SmallText>}
+    {console.log(user)}
+      {user === 'Admin' && <SmallText> Admin Access </SmallText>}
       <Logo src={logo} alt="logo" />
 
       <div key={props.emp.eid}>

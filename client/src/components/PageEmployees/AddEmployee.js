@@ -43,12 +43,6 @@ export default function AddEmployee() {
   const handleAdd = async (e) => {
     e.preventDefault()
 
-    if(!Number.isInteger(mobileNum)) {
-      return setError('Mobile Number needs to be an Integer');
-    }
-
-    setError("")
-
     try {
       const body = {
         did: did,
