@@ -2,17 +2,21 @@ import React, { useState } from 'react'
 import { TableContainer, Row, Header, Data, Icon } from '../Table/Table.styled'
 import { ButtonContainer } from '../Form/Form.styled'
 import trash from '../../assets/Trashcan.svg'
-import greyedTrash from '../../assets/GreyedTrash.svg'
+import bookDisabled from '../../assets/book_disabled.svg'
+import bookEnabled from '../../assets/book_enabled.svg'
+import cancelDisabled from '../../assets/cancel_disabled.svg'
+import cancelEnabled from '../../assets/cancel_enabled.svg'
+import changeCap from '../../assets/change_capacity.svg'
 import Modal from '../Modal'
 import ConfirmationText from '../ConfirmationText'
 import TextButton from '../TextButton'
 
-export default function TableDepartments(props) {
-  const headers = ['#', 'ID', 'Department Name', 'No. of Employees', '']
-  const [showConfirm, setShowConfirm] = useState(Infinity)
+export default function TableBookings(props) {
+  const headers = ['Department ID', 'Room Name', '']
+  const [showConfirm, setShowConfirm] = useState('')
 
   //Deleting a department with id
-  const handleDelete = async (id) => {
+  const cancelBooking = async (id) => {
     try {
       const response = await fetch(`/api/departments/${id}`, {
         method: 'DELETE',
@@ -34,27 +38,31 @@ export default function TableDepartments(props) {
               <Header key={hdr}> {hdr} </Header>
             ))}
           </Row>
-          {props.data.map((dpt, index) => (
-            <Row key={dpt.did}>
-              <Data> {index + 1} </Data>
-              <Data>{dpt.did}</Data>
-              <Data>{dpt.dname}</Data>
+          {props.data.map((bkg, index) => (
+            <Row key={index}>
+              <Data>{bkg.did}</Data>
+              <Data>{bkg.rname}</Data>
               <Data>
-                {dpt.employee_count > 0 ? (
-                  <Icon src={greyedTrash} alt="delete" />
-                ) : (
-                  <Icon
-                    src={trash}
-                    alt="delete"
-                    onClick={() => setShowConfirm(dpt.did)}
-                  />
-                )}
+                <Icon
+                  src={cancelEnabled}
+                  alt="cancel"
+                  onClick={() => setShowConfirm(bkg.rname)}
+                />
+                <Icon
+                  src={bookEnabled}
+                  alt="cancel"
+                  onClick={() => setShowConfirm(bkg.did)}
+                />
+                <Icon
+                  src={changeCap}
+                  alt="cancel"
+                  onClick={() => setShowConfirm(bkg.did)}
+                />
               </Data>
-
-              {showConfirm === dpt.did && (
+              {showConfirm === bkg.rname && (
                 <Modal width="50%" margin="100px auto">
                   <ConfirmationText>
-                    Are you sure you want to remove the '{dpt.dname}'
+                    Are you sure you want to remove the '{bkg.rname}'
                     department?
                   </ConfirmationText>
                   <ButtonContainer>
@@ -63,7 +71,7 @@ export default function TableDepartments(props) {
                     </TextButton>
                     <TextButton
                       enabled={true}
-                      onClick={() => handleDelete(dpt.did)}
+                      onClick={() => cancelBooking(bkg.did)}
                     >
                       Confirm
                     </TextButton>
