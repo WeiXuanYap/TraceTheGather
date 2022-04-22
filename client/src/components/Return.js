@@ -15,9 +15,9 @@ const Container = styled.div`
 
 export default function Return(props) {
   const navigate = useNavigate()
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState('')
 
-  const checkAdmin = async() => {
+  const checkAdmin = async () => {
     try {
       const res = await fetch('/api/verify', {
         method: 'POST',
@@ -26,8 +26,6 @@ export default function Return(props) {
 
       const parseRes = await res.json()
       setUser(parseRes.role)
-
-            
     } catch (err) {
       console.error(err.message)
     }
@@ -49,7 +47,7 @@ export default function Return(props) {
 
   return (
     <Container>
-      {props.fromEmployees && (
+      {props.fromEmployees && user === 'Admin' && (
         <IconButton
           src={userIcon}
           size={'13px'}
@@ -58,14 +56,16 @@ export default function Return(props) {
           Return to Employee Page
         </IconButton>
       )}
-      {user === 'Admin' && <IconButton
-        src={houseIcon}
-        size={'13px'}
-        padding={'10px 10px 0 30px'}
-        onClick={() => navigate('/admin')}
-      >
-        Return to Admin Page
-      </IconButton>}
+      {user === 'Admin' && (
+        <IconButton
+          src={houseIcon}
+          size={'13px'}
+          padding={'10px 10px 0 30px'}
+          onClick={() => navigate('/admin')}
+        >
+          Return to Admin Page
+        </IconButton>
+      )}
       <IconButton
         src={logoutIcon}
         size={'13px'}
