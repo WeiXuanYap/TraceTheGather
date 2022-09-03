@@ -5,8 +5,8 @@ import {
   ButtonContainer,
   StyledText,
 } from './styles/NavButtons.styled'
-
 export default function NavButtons() {
+
   const navigate = useNavigate()
 
   return (

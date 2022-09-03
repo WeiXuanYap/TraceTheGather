@@ -121,7 +121,7 @@ export default function HealthDec(props) {
   const getHealth = async () => {
     try {
       setShowLoading(true)
-      const response = await fetch(`/api/employees/${id}/health_declaration`)
+      const response = await fetch(`/api/employees/${id}/health_declaration_status`)
       const jsonData = await response.json()
       console.log(jsonData)
       setCompleted(jsonData)

@@ -237,6 +237,9 @@ app.post('/api/employees/resign', (req, res) => {
 })
 
 //non_compliance function
+/**
+ * input: start_date, end_date
+ */
 app.post('/api/employees/non_compliance', (req, res) => {
   console.log(req.body)
   db.function('non_compliance', [req.body.start_date, req.body.end_date]).then(
@@ -251,13 +254,13 @@ app.post('/api/employees/non_compliance', (req, res) => {
  * ID - Integer
  */
 
-app.get('/api/employees/:id/health_declaration', (req, res) => {
-  db.query(
-    'SELECT temp FROM Health_Declaration WHERE eid = $1 AND date = CURRENT_DATE',
-    [req.params.id]
-  ).then((data) => {
-    res.send(data)
-  })
+
+app.get('/api/employees/:id/health_declaration_status', (req,res) => {
+  db.query('SELECT temp FROM Health_Declaration WHERE eid = $1 AND date = CURRENT_DATE', [req.params.id]). then(
+    (data) => {
+      res.send(data)
+    }
+  )
 })
 
 /* params needed:
@@ -274,6 +277,9 @@ app.post('/api/employees/:id/health_declaration', (req, res) => {
 })
 
 //Contact_tracing function
+/**
+ * Returns a list of users which have been in a meeting with the user
+ */
 app.get('/api/employees/:id/contact_tracing', (req, res) => {
   db.func('contact_tracing', [req.params.id]).then((data) => {
     res.send(data)
